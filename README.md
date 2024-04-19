@@ -19,11 +19,43 @@ $ ros2 pkg create --build-type ament_python ros_camera
 $ cd src
 $ ros2 pkg create --build-type ament_cmake ros_camera_msgs
 ```
-**5. ros_camera 폴더 파일 경로 수정 (setup.py / package.xml)**
+**5. ros_camera 폴더 파일 수정 (setup.py / package.xml)**
+- setup.py 추가
+```
+entry_points={
+        'console_scripts': [
+            'img_publisher = ros_camera.img_publisher:main',
+            'camera_server = ros_camera.camera_server:main',
+            'filter1 = ros_camera.filter1:main',
+            'filter2 = ros_camera.filter2:main'
+        ],
+    }
+```
+- package.xml 추가
+```
+<build_depend>rosidl_default_generators</build_depend>
+<exec_depend>rosidl_default_runtime</exec_depend>
+<member_of_group>rosidl_interface_packages</member_of_group>
+```
+**6. ros_camera_msgs 폴더 파일 수정**
+- CMakeLists.txt 추가
+```
+find_package(rosidl_default_generators REQUIRED)
 
-**6. ros_camera_msgs 폴더 파일 경로 수정**
-
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "srv/SaveImage.srv"
+  "srv/SaveVideo.srv"
+  "srv/ChangeTopic.srv"
+)
+```
+- package.xml 추가
+```
+<build_depend>rosidl_default_generators</build_depend>
+<exec_depend>rosidl_default_runtime</exec_depend>
+<member_of_group>rosidl_interface_packages</member_of_group>
+```
 **7. Github 파일 경로에 맞게 이동**
+
 
 ## 사용 방법
 **1. 파일 경로 수정 후 빌드**
