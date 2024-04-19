@@ -1,4 +1,8 @@
-# ROS2를 활용한 Camera App Project
+# ROS2 Camera App Project
+**ROS2 Package, OpenCV를 활용한 Camera App**
+****
+
+
 ## 설치 방법
 **1. Workspace 폴더 및 src 폴더 생성**
 ```
