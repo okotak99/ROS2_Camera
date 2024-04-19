@@ -1,0 +1,11 @@
+img_publisher:
+  ros__parameters:
+    width: 640
+    length: 480
+
+
+camera_server:
+  ros__parameters:
+    image_path: "/home/addinedu/dev_ws/ROSCamera/src/ros_camera/resource/image/"
+    video_path: "/home/addinedu/dev_ws/ROSCamera/src/ros_camera/resource/video/"
+

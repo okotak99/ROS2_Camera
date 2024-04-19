@@ -1,0 +1,5 @@
+# SaveVideo.srv
+int64 duration
+---
+bool success
+string message
