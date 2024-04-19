@@ -2,16 +2,18 @@
 ## 설치 방법
 **1. Workspace 폴더 및 src 폴더 생성**
 ```
-$ mkdir -p ~/<workspace name>/src
+$ mkdir -p ~/<workspace_name>/src
 ```
 **2. Build**
+
+- workspace 폴더에서 빌드
 ``` 
-# workspace 폴더에서 빌드
 $ colcon build
 ```
 **3. 패키지 생성**
+
+- pkg nmae ros_camera가 아닐 경우 pkg name 수정필요 
 ```
-# pkg nmae ros_camera가 아닐 경우 pkg name 수정필요 
 $ ros2 pkg create --build-type ament_python ros_camera
 ```
 **4. src 폴더에서 msgs pkg 생성**
@@ -55,55 +57,79 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 <member_of_group>rosidl_interface_packages</member_of_group>
 ```
 **7. Github 파일 경로에 맞게 이동**
+- 파일 경로
+
+```
+───src
+    ├── ros_camera
+    │   ├── launch
+    │   │   └── camera_app.launch.py
+    │   ├── package.xml
+    │   ├── param
+    │   │   └── camera_app.yaml
+    │   ├── ros_camera
+    │   │   ├── camera_server.py
+    │   │   ├── filter1.py
+    │   │   ├── filter2.py
+    │   │   └── img_publisher.py
+    │   └── setup.py
+    └── ros_camera_msgs
+        ├── CMakeLists.txt
+        ├── package.xml
+        └── srv
+            ├── ChangeTopic.srv
+            ├── SaveImage.srv
+            └── SaveVideo.srv
+```
 
 
 ## 사용 방법
 **1. 파일 경로 수정 후 빌드**
+- workspace 폴더에서 빌드
 ```
-# workspace 폴더에서 빌드
 $ colcon build
 ```
 **2. 터미널 명령어 실행**
+- ROS의 환경 변수 및 기타 설정을 로드
 ```
-# ROS의 환경 변수 및 기타 설정을 로드
 $ source /opt/ros/humble/setup.bash;
-
-# ROS Domain 설정 
+```
+- ROS Domain 설정 
+```
 $ export ROS_DOMAIN_ID=8
-
-# 빌드된 ROS 2 패키지의 실행 (경로는 사용자에 맞게 수정)
+```
+- 빌드된 ROS 2 패키지의 실행 (경로는 사용자에 맞게 수정)
+```
 $ source ~/dev_ws/ROSCamera/install/local_setup.bash;
 ```
 **3. launch file 실행**
+- ros2 launch pkg_name launch_file_name
 ```
-# camera_app.launch.py 실행
-# ros2 launch <pgg name> <launch file name>
 $ ros2 launch ros_camera camera_app.launch.py
 ```
 **4. 서비스 실행 방법**
 
 **a. 이미지 저장**
+- ros2 service call <service_name> <service_type>
 ```
-# ros2 service call <service name> <service type>
 $ ros2 service call /save_image ros_camera_msgs/srv/SaveImagem
 ```
 **b. 비디오 저장**
+- ros2 service call <service_name> <service_type> <request>
+  - duration: 녹화 시간(초)
 ```
-# ros2 service call <service name> <service type> <request>
-# duration: 녹화 시간(초)
 $ ros2 service call /save_video ros_camera_msgs/srv/SaveVideo "{duration: 5}"
 ```
 **c. filter 변경**
+- ros2 service call <service_name> <service_type> <request>
+  - request 종류: canny, concave, camera, gray, cartoon
 ```
-# ros2 service call <service name> <service type> <request>
-# request 종류: canny, concave, camera, gray, cartoon
 $ ros2 service call /change_topic ros_camera_msgs/srv/ChangeTopic "{topic: canny}"
 ```
 **5. rqt사용**
 
 - rqt GUI를 통해 cam화면 확인
 ![image](https://github.com/okotak99/ROS2_Camera/assets/157962186/ae545b87-9fb5-4a92-b344-1aa02a6257fb)
-
 
 ## 파라미터 설정
 **camera_app.yaml 파라미터**
@@ -125,7 +151,7 @@ camera_server:
 ![image](https://github.com/okotak99/ROS2_Camera/assets/157962186/a26363e1-b986-489e-9515-64a6b6ee25ab)
 
 **img_publisher**
-- webcam을 통해 받은 frame을 /camera topic으로 publish
+- webcam을 통해 받은 frame을 camera topic으로 publish
   
 **filter1, filter2**
 - /camera topic을 통해 받은 frame을 다양한 필터를 적용하여 publish
